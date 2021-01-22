@@ -109,3 +109,33 @@ function validateRole($role, $ignoreFields) {
     }
     return $errors;
 }
+
+  // Accept a post object and fields that should be ignored during validation
+  //  validates post and return an array with the error messages
+  function validatePost($post, $ignoreFields) {
+      global $conn;
+      $errors = [];
+
+      foreach ($post as $key => $value) {
+        if (in_array($key, $ignoreFields)) {
+          continue;
+        }
+        if (empty($post[$key])) {
+          $errors[$key] = "This field is required";
+        }
+      }
+
+      return $errors;
+  }
+
+
+  // escape value from form
+  function esc(String $value) {
+    // bring the global db connect object into function
+    global $conn;
+
+    $val = trim($value); // remove empty space sorrounding string
+    $val = mysqli_real_escape_string($conn, $value);
+
+    return $val;
+  }
